@@ -78,7 +78,8 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
-      <body>
+      {/* Extensions (e.g. Grammarly) inject attributes on <body> before hydration. */}
+      <body suppressHydrationWarning>
         <a
           href="#main"
           className="meta bg-ink text-paper fixed top-3 left-3 z-[100] -translate-y-24 px-4 py-3 focus:translate-y-0"
