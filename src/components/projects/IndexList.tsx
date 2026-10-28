@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { ProjectVisual } from "./ProjectVisual";
-import type { ImageAsset, Locale } from "@/types/content";
+import { SlotScreen, worldStyle } from "@/components/media/Frames";
+import type { Locale, MediaSlot, ProjectWorld } from "@/types/content";
 
 export type IndexRow = {
   slug: string;
@@ -11,15 +11,18 @@ export type IndexRow = {
   title: string;
   category: string | null;
   year: string | null;
+  tech: string | null;
   summary: string | null;
   href: string | null;
-  thumbnail?: ImageAsset;
+  world?: ProjectWorld;
+  slot?: MediaSlot;
 };
 
 type Labels = {
   number: string;
   project: string;
   category: string;
+  stack: string;
   year: string;
   caseStudy: string;
   noCaseStudy: string;
@@ -27,11 +30,12 @@ type Labels = {
 };
 
 const rowGrid =
-  "grid grid-cols-[2.25rem_1fr_auto] items-baseline gap-x-4 md:grid-cols-[4rem_minmax(0,5fr)_minmax(0,3fr)_5rem_2rem] md:gap-x-6";
+  "grid grid-cols-[2.25rem_1fr_auto] items-baseline gap-x-4 md:grid-cols-[3.5rem_minmax(0,5fr)_minmax(0,3fr)_4rem_1.5rem] lg:grid-cols-[3.5rem_minmax(0,4fr)_minmax(0,3fr)_minmax(0,3fr)_4rem_1.5rem] md:gap-x-6";
 
 /**
- * Editorial index. Rows with a case study link out; rows with only a summary
- * expand in place (works on touch); on fine pointers a preview follows the cursor.
+ * Editorial catalog. Case-study rows flood with cobalt on hover and show a
+ * preview in the project's own visual world; summary-only rows expand in
+ * place (works on touch); unknown rows stay quiet.
  */
 export function IndexList({
   rows,
@@ -80,78 +84,104 @@ export function IndexList({
     return () => cancelAnimationFrame(frame);
   }, [active, canPreview]);
 
+  const target = (e: React.PointerEvent) => ({ x: e.clientX + 32, y: e.clientY - 150 });
+
   const track = (e: React.PointerEvent) => {
-    pos.current.tx = e.clientX + 28;
-    pos.current.ty = e.clientY - 120;
+    const { x, y } = target(e);
+    pos.current.tx = x;
+    pos.current.ty = y;
   };
 
   const enter = (row: IndexRow) => (e: React.PointerEvent) => {
-    if (!canPreview) return;
+    if (!canPreview || !row.href) return setActive(null);
     if (!active) {
-      pos.current.x = pos.current.tx = e.clientX + 28;
-      pos.current.y = pos.current.ty = e.clientY - 120;
+      const { x, y } = target(e);
+      pos.current = { x, y, tx: x, ty: y };
     }
     setActive(row);
   };
 
   return (
-    <div className="mt-14 md:mt-20" onPointerMove={track} onPointerLeave={() => setActive(null)}>
-      <div className={`${rowGrid} meta text-ink-muted rule-b hidden pb-3 md:grid`} aria-hidden>
+    <div className="mt-10 md:mt-12" onPointerMove={track} onPointerLeave={() => setActive(null)}>
+      <div
+        className={`${rowGrid} meta text-ink-muted border-ink hidden border-b pb-2.5 md:grid`}
+        aria-hidden
+      >
         <span>{labels.number}</span>
         <span>{labels.project}</span>
         <span>{labels.category}</span>
+        <span className="hidden lg:block">{labels.stack}</span>
         <span>{labels.year}</span>
         <span />
       </div>
 
       <ul>
         {rows.map((row) => {
+          const linked = !!row.href;
           const cells = (
             <>
-              <span className="meta text-wine">{row.number}</span>
-              <span className="display text-title transition-transform duration-500 ease-(--ease-editorial) group-hover:translate-x-1.5">
+              <span
+                className={`meta relative ${linked ? "text-accent group-hover:text-accent-ink" : "text-wine"}`}
+              >
+                {row.number}
+              </span>
+              <span className="display relative text-[clamp(1.35rem,1.05rem+1vw,2.1rem)] leading-tight transition-transform duration-500 ease-(--ease-editorial) group-hover:translate-x-2">
                 {row.title}
               </span>
-              <span className="meta text-ink-muted col-start-2 row-start-2 mt-1.5 md:col-start-auto md:row-start-auto md:mt-0">
+              <span className="meta text-ink-muted relative col-start-2 row-start-2 mt-1 group-hover:text-current md:col-start-auto md:row-start-auto md:mt-0">
                 {row.category ?? "—"}
               </span>
-              <span className="meta text-ink-muted col-start-3 row-start-1 text-right md:col-start-auto md:row-start-auto md:text-left">
+              <span className="meta text-ink-muted relative hidden group-hover:text-current lg:block">
+                {row.tech ?? "—"}
+              </span>
+              <span className="meta text-ink-muted relative col-start-3 row-start-1 text-right group-hover:text-current md:col-start-auto md:row-start-auto md:text-left">
                 {row.year ?? "—"}
               </span>
               <span
-                className="meta text-accent col-start-3 row-start-2 text-right md:col-start-auto md:row-start-auto"
+                className="meta relative col-start-3 row-start-2 text-right md:col-start-auto md:row-start-auto"
                 aria-hidden
               >
-                {row.href ? <span data-arrow="ne">↗</span> : row.summary ? <Plus /> : null}
+                {linked ? (
+                  <span data-arrow="ne" className="text-accent group-hover:text-accent-ink">
+                    ↗
+                  </span>
+                ) : row.summary ? (
+                  <Plus />
+                ) : null}
               </span>
             </>
           );
-          const rowClass = `${rowGrid} group py-5 md:py-6 w-full text-left`;
+          const rowClass = `${rowGrid} group relative w-full py-3.5 text-left md:py-4`;
 
           return (
             <li key={row.slug} className="rule-b" onPointerEnter={enter(row)}>
-              {row.href ? (
+              {linked ? (
                 <Link
                   prefetch
-                  href={row.href}
-                  className={`${rowClass} hover:text-accent transition-colors`}
+                  href={row.href!}
+                  className={`${rowClass} hover:text-accent-ink focus-visible:text-accent-ink transition-colors duration-300`}
                 >
+                  {/* Cobalt flood */}
+                  <span
+                    className="bg-accent absolute inset-y-0 -right-3 -left-3 origin-left scale-x-0 transition-transform duration-500 ease-(--ease-editorial) group-hover:scale-x-100 group-focus-visible:scale-x-100"
+                    aria-hidden
+                  />
                   {cells}
                   <span className="sr-only">— {labels.caseStudy}</span>
                 </Link>
               ) : row.summary ? (
                 <details className="group/details">
                   <summary
-                    className={`${rowClass} cursor-pointer list-none [&::-webkit-details-marker]:hidden`}
+                    className={`${rowClass} hover:bg-paper-raised cursor-pointer list-none [&::-webkit-details-marker]:hidden`}
                   >
                     {cells}
                   </summary>
-                  <p className="text-ink-soft max-w-[60ch] pb-7 pl-[3.25rem] md:pl-[5.5rem]">
+                  <p className="text-ink-soft max-w-[62ch] pb-6 pl-[3.25rem] md:pl-[5rem]">
                     {row.summary}
                   </p>
                 </details>
               ) : (
-                <div className={rowClass}>
+                <div className={`${rowClass} text-ink-muted`}>
                   {cells}
                   <span className="sr-only">— {labels.noCaseStudy}</span>
                 </div>
@@ -165,21 +195,26 @@ export function IndexList({
         <div
           ref={preview}
           aria-hidden
-          className="pointer-events-none fixed top-0 left-0 z-30 w-[22rem]"
+          className="pointer-events-none fixed top-0 left-0 z-30 w-[24rem]"
         >
           <div
-            className={`transition-[opacity,scale] duration-500 ease-(--ease-editorial) ${active ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
+            className={`transition-[opacity,scale,rotate] duration-500 ease-(--ease-editorial) ${active ? "scale-100 rotate-[-2deg] opacity-100" : "scale-90 rotate-0 opacity-0"}`}
           >
-            {active && (
-              <ProjectVisual
-                image={active.thumbnail}
-                locale={locale}
-                title={active.title}
-                figure={active.number}
-                pendingLabel={active.href ? labels.caseStudy : labels.noCaseStudy}
-                ratio="4/3"
-                sizes="352px"
-              />
+            {active?.world && active.slot && (
+              <div
+                style={worldStyle(active.world)}
+                className="bg-(--w-bg) p-4 text-(--w-ink) shadow-2xl"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden rounded-[4px] bg-(--w-surface) ring-1 ring-(--w-line)">
+                  <SlotScreen slot={active.slot} locale={locale} sizes="384px" />
+                </div>
+                <p className="meta mt-3 flex justify-between text-(--w-muted)">
+                  <span>
+                    {active.number} — {active.title}
+                  </span>
+                  <span>{active.slot.label[locale]}</span>
+                </p>
+              </div>
             )}
           </div>
         </div>

@@ -8,6 +8,7 @@ import type { Locale } from "@/types/content";
 
 type Labels = {
   name: string;
+  role: string;
   menu: string;
   close: string;
   cv: string;
@@ -96,8 +97,15 @@ export function NavBar({ locale, homeHref, links, cv, labels }: Props) {
       className="group/header bg-paper/0 data-[compact]:bg-paper data-[compact]:border-rule sticky top-0 z-50 border-b border-transparent transition-[background-color,border-color] duration-500"
     >
       <div className="shell flex h-16 items-center justify-between gap-6 transition-[height] duration-500 ease-(--ease-editorial) group-data-[compact]/header:h-12 md:h-20">
-        <Link href={homeHref} aria-label={labels.home} className="meta text-ink font-medium">
-          {labels.name}
+        <Link
+          href={homeHref}
+          aria-label={labels.home}
+          className="meta group flex items-baseline gap-3"
+        >
+          <span className="text-ink group-hover:text-accent font-medium transition-colors">
+            {labels.name}
+          </span>
+          <span className="text-ink-muted hidden xl:inline">— {labels.role}</span>
         </Link>
 
         <nav aria-label={labels.primaryNav} className="meta hidden items-center gap-8 md:flex">

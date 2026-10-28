@@ -1,4 +1,5 @@
 import { IndexList, type IndexRow } from "@/components/projects/IndexList";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { projects } from "@/content/projects";
 import { known, pad } from "@/lib/format";
 import { getDictionary, localePath } from "@/lib/i18n";
@@ -12,38 +13,30 @@ export async function ProjectIndex() {
     title: p.shortTitle ?? p.title,
     category: known(p.category)?.[locale] ?? null,
     year: known(p.year)?.toString() ?? null,
+    tech: p.technologies?.slice(0, 3).join(" · ") ?? null,
     summary: known(p.summary)?.[locale] ?? null,
     href: p.caseStudy ? localePath(locale, `/work/${p.slug}`) : null,
-    thumbnail: p.thumbnail,
+    world: p.presentation?.world,
+    slot: p.presentation?.media[0],
   }));
 
-  const years = projects.map((p) => known(p.year)).filter((y): y is number => y !== null);
-  const range =
-    years.length === 0
-      ? null
-      : Math.min(...years) === Math.max(...years)
-        ? `${Math.min(...years)}`
-        : `${Math.min(...years)}—${Math.max(...years)}`;
+  const withCase = rows.filter((r) => r.href).length;
 
   return (
-    <section id="index" aria-labelledby="index-title" className="shell pt-32 md:pt-48">
-      <header className="grid-editorial rule-t items-baseline gap-y-6 pt-4">
-        <p className="meta text-wine col-span-1">(02)</p>
-        <h2
-          id="index-title"
-          className="display text-headline col-span-3 md:col-span-5 lg:col-span-6"
-        >
-          {t.index.title}
-        </h2>
-        {range && (
-          <p className="meta text-ink-muted col-span-4 md:col-span-2 md:text-right lg:col-span-5">
-            {range}
-          </p>
-        )}
-        <p className="text-ink-muted col-span-4 max-w-[46ch] md:col-span-5 md:col-start-2 lg:col-span-4 lg:col-start-2">
-          {t.index.note}
+    <section id="index" aria-labelledby="index-title" className="shell pt-20 md:pt-28">
+      <SectionHeader
+        id="index-title"
+        number="02"
+        title={t.index.title}
+        aside={`${pad(rows.length)} · ${t.index.aside}`}
+      />
+      <div className="grid-editorial mt-5 gap-y-4">
+        <p className="text-ink-soft col-span-4 max-w-[52ch] md:col-span-5">{t.index.note}</p>
+        <p className="meta text-ink-muted col-span-4 md:col-span-3 md:text-right lg:col-span-4 lg:col-start-9">
+          <span className="text-accent">{pad(withCase)}</span> {t.index.caseStudy} ·{" "}
+          {pad(rows.length - withCase)} {t.index.noCaseStudy}
         </p>
-      </header>
+      </div>
 
       <IndexList
         rows={rows}
@@ -52,6 +45,7 @@ export async function ProjectIndex() {
           number: t.index.columns.number,
           project: t.index.columns.project,
           category: t.index.columns.category,
+          stack: t.caseStudy.stack,
           year: t.index.columns.year,
           caseStudy: t.index.caseStudy,
           noCaseStudy: t.index.noCaseStudy,

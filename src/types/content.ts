@@ -46,6 +46,36 @@ export type CaseStudySection = {
   blocks: CaseStudyBlock[];
 };
 
+/* ---------- Project presentation ---------- */
+
+/** A project's own visual world, framed by the portfolio's editorial system. */
+export type ProjectWorld = {
+  background: string;
+  surface: string;
+  ink: string;
+  muted: string;
+  accent: string;
+  line: string;
+};
+
+/** Schematic screen drawn while a real screenshot is missing. */
+export type ScreenKind =
+  | "storefront"
+  | "product"
+  | "checkout"
+  | "projection"
+  | "diff"
+  | "ios-log"
+  | "ios-progress"
+  | "ios-history";
+
+/** One screenshot position in a composition. `image` replaces the schematic. */
+export type MediaSlot = {
+  screen: ScreenKind;
+  label: Localized;
+  image?: ImageAsset;
+};
+
 /* ---------- Projects ---------- */
 
 export type Project = {
@@ -63,6 +93,15 @@ export type Project = {
   featured?: { order: number };
   thumbnail?: ImageAsset;
   images?: ImageAsset[];
+  /** Visual world + screenshot slots used by featured compositions and previews. */
+  presentation?: {
+    /** Featured composition: flagship (immersive browser stack), data (artifacts on a field), devices (phone stage). */
+    layout: "flagship" | "data" | "devices";
+    world: ProjectWorld;
+    media: MediaSlot[];
+  };
+  /** Short scannable capability/feature lines shown on featured compositions. */
+  highlights?: Localized<string[]>;
   externalUrl?: string | Pending;
   repositoryUrl?: string | Pending;
   caseStudy?: {
@@ -83,6 +122,8 @@ export type ExperienceEntry = {
   end: string | null;
   summary: Localized;
   highlights: Localized<string[]>;
+  /** Verified numbers worth setting typographically. */
+  metrics?: { value: string; label: Localized }[];
   /** Links an entry to a project case study. */
   projectSlug?: string;
 };

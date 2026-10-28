@@ -21,6 +21,12 @@
   --plate: #e2ddcf;
   --plate-line: rgb(23 22 20 / 0.08);
   --selection: rgb(31 63 209 / 0.18);
+  /* Saturated fields: cobalt is identity, wine is the single closing moment. */
+  --field-cobalt: #1f3fd1;
+  --field-wine: #6f1a27;
+  --on-field: #f3f0e8;
+  --on-field-muted: rgb(243 240 232 / 0.74);
+  --on-field-rule: rgb(243 240 232 / 0.26);
   color-scheme: light;
 }
 
@@ -39,6 +45,8 @@
   --plate: #1f1f1d;
   --plate-line: rgb(236 232 223 / 0.06);
   --selection: rgb(129 151 255 / 0.25);
+  --field-cobalt: #2340c4;
+  --field-wine: #5e1622;
   color-scheme: dark;
 }
 
@@ -55,6 +63,11 @@
   --color-accent-ink: var(--accent-ink);
   --color-wine: var(--wine);
   --color-plate: var(--plate);
+  --color-field-cobalt: var(--field-cobalt);
+  --color-field-wine: var(--field-wine);
+  --color-on-field: var(--on-field);
+  --color-on-field-muted: var(--on-field-muted);
+  --color-on-field-rule: var(--on-field-rule);
 
   --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
@@ -66,6 +79,8 @@
   --text-statement--line-height: 0.98;
   --text-headline: clamp(2rem, 1.25rem + 3vw, 4.5rem);
   --text-headline--line-height: 1;
+  --text-section: clamp(1.5rem, 1.05rem + 1.7vw, 2.6rem);
+  --text-section--line-height: 1;
   --text-title: clamp(1.5rem, 1.2rem + 1.2vw, 2.4rem);
   --text-title--line-height: 1.08;
   --text-lede: clamp(1.15rem, 1.03rem + 0.45vw, 1.45rem);
@@ -238,10 +253,18 @@ body {
   transform: none;
 }
 
+/* Inline on phones so statement lines can reflow; masked rows from md up. */
 .motion [data-hero-line] {
-  display: block;
+  display: inline;
   animation: hero-rise 1.1s var(--ease-editorial) both;
+  animation-name: hero-fade; /* clip-path masks misbehave on wrapped inline text */
   animation-delay: calc(var(--i, 0) * 90ms + 80ms);
+}
+@media (width >= 48rem) {
+  .motion [data-hero-line] {
+    display: block;
+    animation-name: hero-rise;
+  }
 }
 .motion [data-hero-fade] {
   animation: hero-fade 1s var(--ease-editorial) both;
@@ -257,7 +280,7 @@ body {
   to {
     opacity: 1;
     transform: none;
-    clip-path: inset(0 0 -20% 0);
+    clip-path: inset(-50% -10% -50% -10%);
   }
 }
 @keyframes hero-fade {

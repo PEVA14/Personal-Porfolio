@@ -24,6 +24,40 @@ export const projects: Project[] = [
     },
     technologies: ["Next.js", "React", "TypeScript", "PostgreSQL", "Mercado Pago", "Skydropx"],
     featured: { order: 1 },
+    highlights: {
+      en: [
+        "Mercado Pago payments & signed webhooks",
+        "Inventory holds under row-level locks",
+        "Order state with optimistic locking",
+        "Skydropx shipping integration",
+        "Bilingual, end to end",
+      ],
+      es: [
+        "Pagos con Mercado Pago y webhooks firmados",
+        "Reservas de inventario con bloqueos por fila",
+        "Estado de pedidos con optimistic locking",
+        "Integración de envíos con Skydropx",
+        "Bilingüe de punta a punta",
+      ],
+    },
+    presentation: {
+      layout: "flagship",
+      // TODO(pablo): align with NEOGEN's real brand palette once screenshots land.
+      world: {
+        background: "#101113",
+        surface: "#1b1c20",
+        ink: "#ecebe7",
+        muted: "#9b9993",
+        accent: "#d8d2c4",
+        line: "rgb(236 235 231 / 0.12)",
+      },
+      // TODO(pablo): add real screenshots (image: {...}) in /public/images/projects/neogen/.
+      media: [
+        { screen: "storefront", label: { en: "Storefront", es: "Tienda" } },
+        { screen: "product", label: { en: "Product detail", es: "Detalle de producto" } },
+        { screen: "checkout", label: { en: "Mobile checkout", es: "Checkout móvil" } },
+      ],
+    },
     // TODO(pablo): add the public storefront URL once it should be linked.
     externalUrl: pending("Public URL not yet provided"),
     caseStudy: {
@@ -233,6 +267,21 @@ export const projects: Project[] = [
     },
     technologies: ["Go", "React", "TypeScript", "Docker", "DuckDB"],
     featured: { order: 2 },
+    presentation: {
+      layout: "data",
+      world: {
+        background: "var(--field-cobalt)",
+        surface: "#0d1641",
+        ink: "#f3f0e8",
+        muted: "rgb(243 240 232 / 0.74)",
+        accent: "#ffffff",
+        line: "rgb(243 240 232 / 0.22)",
+      },
+      media: [
+        { screen: "projection", label: { en: "Cash-flow projection", es: "Proyección de flujo" } },
+        { screen: "diff", label: { en: "What-if diff", es: "Comparación de escenarios" } },
+      ],
+    },
     // TODO(pablo): add repository / demo URLs if they should be public.
     repositoryUrl: pending("Repository URL not yet provided"),
     caseStudy: {
@@ -331,6 +380,40 @@ export const projects: Project[] = [
     context: { en: "Personal product", es: "Producto personal" },
     technologies: ["Swift", "SwiftUI"],
     featured: { order: 3 },
+    highlights: {
+      en: [
+        "Workout logging",
+        "History",
+        "Body measurements",
+        "Progress charts",
+        "Notifications",
+        "Local persistence",
+      ],
+      es: [
+        "Registro de entrenamientos",
+        "Historial",
+        "Medidas corporales",
+        "Gráficas de progreso",
+        "Notificaciones",
+        "Persistencia local",
+      ],
+    },
+    presentation: {
+      layout: "devices",
+      world: {
+        background: "#1c1c1e",
+        surface: "#2c2c2e",
+        ink: "#f2f2f7",
+        muted: "#8e8e93",
+        accent: "#0a84ff",
+        line: "rgb(242 242 247 / 0.12)",
+      },
+      media: [
+        { screen: "ios-log", label: { en: "Workout log", es: "Registro" } },
+        { screen: "ios-progress", label: { en: "Progress", es: "Progreso" } },
+        { screen: "ios-history", label: { en: "History", es: "Historial" } },
+      ],
+    },
     caseStudy: {
       headline: {
         en: "A product with exactly one user — which makes every rough edge impossible to ignore.",
@@ -435,3 +518,12 @@ export const featuredProjects = projects
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
 
 export const caseStudySlugs = projects.filter((p) => p.caseStudy).map((p) => p.slug);
+
+type Block = NonNullable<Project["caseStudy"]>["sections"][number]["blocks"][number];
+
+/** First block of a kind in a project's case study — lets cards reuse verified facts. */
+export function caseBlock<K extends Block["kind"]>(project: Project, kind: K) {
+  return project.caseStudy?.sections
+    .flatMap((s) => s.blocks)
+    .find((b): b is Extract<Block, { kind: K }> => b.kind === kind);
+}

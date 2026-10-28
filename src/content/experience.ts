@@ -24,6 +24,17 @@ export const experience: ExperienceEntry[] = [
         "Automaticé flujos de reportes, con un ahorro estimado de ~30 horas de trabajo por semana.",
       ],
     },
+    metrics: [
+      {
+        value: "<10 min",
+        label: { en: "First response, down from ~24 h", es: "Primera respuesta, antes ~24 h" },
+      },
+      { value: "1.1 s", label: { en: "p75 LCP · zero CLS", es: "LCP p75 · CLS cero" } },
+      {
+        value: "~30 h",
+        label: { en: "Staff-hours saved weekly", es: "Horas ahorradas por semana" },
+      },
+    ],
   },
   {
     id: "neogen",
@@ -47,6 +58,11 @@ export const experience: ExperienceEntry[] = [
         "Pruebas automatizadas para pagos, envíos, checkout y operación.",
       ],
     },
+    metrics: [
+      { value: "~147", label: { en: "SKUs", es: "SKUs" } },
+      { value: "~14", label: { en: "API endpoints", es: "Endpoints de API" } },
+      { value: "~37", label: { en: "Server actions", es: "Server actions" } },
+    ],
     projectSlug: "neogen",
   },
   {

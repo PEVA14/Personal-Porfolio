@@ -41,8 +41,13 @@ Case-study sections are composed from typed blocks (`prose`, `list`, `facts`,
 | Portrait       | `public/images/about/pablo.jpg`  | 4:5, ≥1600×2000. Replaces the placeholder plate automatically.                     |
 | Project images | `public/images/projects/<slug>/` | Reference them from `thumbnail` / `images` / case-study blocks.                    |
 
-Until real imagery exists, projects render an intentional “imagery in
-preparation” plate — no stock photos or fake screenshots.
+Featured projects are composed from `presentation` in `projects.ts`: a
+`layout` (`flagship` browser stack, `data` artifacts on a field, `devices`
+phone stage), a `world` (the project's own colours) and `media` slots. Each
+slot draws a labelled schematic screen until you give it an `image` — then the
+real screenshot drops into the same frame. Primitives live in
+`src/components/media/` (`BrowserFrame`, `PhoneFrame`, `AppWindow`,
+`SchematicScreen`). Schematics show layout intent only — no invented copy or data.
 
 ## Architecture notes
 

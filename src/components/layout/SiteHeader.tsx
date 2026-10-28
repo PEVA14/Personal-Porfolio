@@ -20,6 +20,7 @@ export async function SiteHeader() {
       cv={publicAssetExists(profile.cv.path) ? profile.cv.path : null}
       labels={{
         name: profile.name,
+        role: t.hero.role,
         menu: t.a11y.menu,
         close: t.a11y.close,
         cv: t.nav.cv,

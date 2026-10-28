@@ -6,8 +6,8 @@ export async function SiteFooter() {
   const { github, linkedin } = profile.social;
 
   return (
-    <footer className="shell meta text-ink-muted">
-      <div className="rule-t flex flex-col gap-4 py-8 md:flex-row md:items-center md:justify-between">
+    <footer className="bg-field-wine text-on-field-muted meta">
+      <div className="shell border-on-field-rule flex flex-col gap-4 border-t py-8 md:flex-row md:items-center md:justify-between">
         <p>{t.footer.built}</p>
         <ul className="flex flex-wrap items-center gap-x-7 gap-y-2">
           {[linkedin, github].map((s) => (
@@ -16,7 +16,7 @@ export async function SiteFooter() {
                 href={s.url}
                 target="_blank"
                 rel="noopener"
-                className="hover:text-accent transition-colors"
+                className="hover:text-on-field transition-colors"
               >
                 {s.label} <span aria-hidden>↗</span>
                 <span className="sr-only">{t.a11y.newTab}</span>
@@ -24,7 +24,7 @@ export async function SiteFooter() {
             </li>
           ))}
           <li>
-            <a href="#main" className="hover:text-accent transition-colors">
+            <a href="#main" className="hover:text-on-field transition-colors">
               {t.footer.top} <span aria-hidden>↑</span>
             </a>
           </li>

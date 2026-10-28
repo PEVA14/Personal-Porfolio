@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { CaseStudyBlocks } from "@/components/case-study/CaseStudyBlocks";
+import { ProjectStage } from "@/components/media/ProjectStage";
 import { ProjectVisual } from "@/components/projects/ProjectVisual";
 import { MetaList } from "@/components/ui/MetaList";
 import { caseStudySlugs, getProject, projects } from "@/content/projects";
@@ -151,16 +152,20 @@ async function CaseStudy({ params }: { params: PageProps<"/[lang]/work/[slug]">[
         data-hero-fade
         style={{ "--i": 2 } as React.CSSProperties}
       >
-        <ProjectVisual
-          image={project.thumbnail}
-          locale={locale}
-          title={project.shortTitle ?? project.title}
-          figure={`Fig. ${number}`}
-          pendingLabel={t.work.imagePending}
-          ratio="16/9"
-          sizes="(min-width: 1680px) 1600px, 100vw"
-          priority
-        />
+        {project.presentation ? (
+          <ProjectStage project={project} locale={locale} />
+        ) : (
+          <ProjectVisual
+            image={project.thumbnail}
+            locale={locale}
+            title={project.shortTitle ?? project.title}
+            figure={`Fig. ${number}`}
+            pendingLabel={t.work.imagePending}
+            ratio="16/9"
+            sizes="(min-width: 1680px) 1600px, 100vw"
+            priority
+          />
+        )}
       </div>
 
       <div className="shell mt-20 md:mt-32">
