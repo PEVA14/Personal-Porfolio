@@ -1,0 +1,112 @@
+import type { Dictionary } from "./en";
+
+export const es: Dictionary = {
+  meta: {
+    title: "Pablo Vargas — Ingeniero de Software y Product Builder",
+    description:
+      "Pablo Vargas es ingeniero de software y product builder en Guadalajara, México. Construye productos digitales desde los sistemas que los sostienen hasta las interfaces que la gente usa.",
+    workDescription: "Caso de estudio de Pablo Vargas, Ingeniero de Software y Product Builder.",
+  },
+  a11y: {
+    menu: "Menú",
+    close: "Cerrar",
+    skip: "Saltar al contenido",
+    primaryNav: "Principal",
+    home: "Pablo Vargas — inicio",
+    openMenu: "Abrir menú",
+    closeMenu: "Cerrar menú",
+    themeToLight: "Cambiar a tema claro",
+    themeToDark: "Cambiar a tema oscuro",
+    language: "Idioma",
+    switchTo: "View in English",
+    newTab: "(se abre en otra pestaña)",
+    cvUnavailable: "CV — próximamente",
+  },
+  nav: {
+    work: "Trabajo",
+    experience: "Experiencia",
+    about: "Sobre mí",
+    contact: "Contacto",
+    cv: "CV",
+  },
+  hero: {
+    role: "Ingeniero de Software y Product Builder",
+    statement: ["Construyo productos", "digitales, de la idea", "a la implementación."],
+    support:
+      "Ingeniero de software enfocado en productos digitales bien pensados: desde los sistemas que los sostienen hasta las interfaces que la gente realmente usa.",
+    basedIn: "Desde",
+    availability: "Abierto a oportunidades",
+    cue: "Trabajo seleccionado",
+  },
+  work: {
+    eyebrow: "Trabajo seleccionado",
+    count: "Tres proyectos",
+    role: "Rol",
+    year: "Año",
+    stack: "Stack",
+    context: "Contexto",
+    view: "Ver caso de estudio",
+    imagePending: "Imágenes en preparación",
+  },
+  index: {
+    title: "Índice de proyectos",
+    columns: { number: "No.", project: "Proyecto", category: "Disciplina", year: "Año" },
+    caseStudy: "Caso de estudio",
+    noCaseStudy: "Detalles próximamente",
+    note: "Un registro más amplio de lo que he construido. Los proyectos destacados abren un caso de estudio.",
+  },
+  experience: {
+    title: "Experiencia",
+    present: "Actual",
+    relatedCase: "Leer el caso de estudio",
+  },
+  about: {
+    eyebrow: "Sobre mí",
+    title: ["Ingeniero por formación.", "Constructor por naturaleza."],
+    body: [
+      "Estudio Ingeniería en Tecnologías Computacionales en el Tecnológico de Monterrey, en Guadalajara. La carrera me da las bases; construir cosas reales es como descubro para qué sirven.",
+      "El trabajo que más disfruto está entre disciplinas: el modelo de datos que hace posible una función y la interfaz que la vuelve evidente. Me gusta hacerme cargo de ambos, y de lo poco glamuroso que hay en medio: el estado, los casos límite y los detalles que nadie nota hasta que están mal.",
+    ],
+    educationTitle: "Formación",
+    gpa: "Promedio",
+    beyondTitle: "Más allá del software",
+    beyond:
+      "Lejos del teclado hay videojuegos, cine, escritura, arte y música, y animales siempre que haya uno cerca. De ahí viene buena parte de mi sentido del ritmo, del tono y del detalle.",
+    portraitPending: "Retrato próximamente",
+  },
+  contact: {
+    eyebrow: "Contacto",
+    title: "¿Tienes algo que valga la pena construir?",
+    cta: "Hablemos.",
+    email: "Correo",
+  },
+  caseStudy: {
+    back: "Todo el trabajo",
+    sections: {
+      overview: "Panorama",
+      context: "Contexto",
+      challenge: "El reto",
+      product: "Producto y UX",
+      engineering: "Ingeniería",
+      details: "Detalles seleccionados",
+      outcome: "Resultado",
+    },
+    role: "Rol",
+    year: "Año",
+    stack: "Stack",
+    context: "Contexto",
+    visit: "Visitar sitio",
+    repository: "Repositorio",
+    next: "Siguiente proyecto",
+    contents: "Contenido",
+  },
+  footer: {
+    built: "Diseñado y desarrollado por Pablo Vargas.",
+    top: "Volver arriba",
+  },
+  notFound: {
+    title: "Aquí no hay nada.",
+    body: "La página que buscas no existe o se movió.",
+    home: "Volver al inicio",
+  },
+};
